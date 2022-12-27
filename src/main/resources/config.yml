@@ -1,0 +1,4 @@
+Host: localhost
+Database: SimpleProxy
+User: root
+Passwort: 'password123'

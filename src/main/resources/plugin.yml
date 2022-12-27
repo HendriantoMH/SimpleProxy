@@ -1,0 +1,4 @@
+name: ${project.artifactId}
+main: ${project.groupId}.Main
+version: {project.version}
+author: RCTI
