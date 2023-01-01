@@ -12,7 +12,7 @@ public class DataManager {
     public String partyprefix = CC.translate("&f&lPARTY &8/ &7");
     public String partychat = CC.translate("&f&lPARTYCHAT &8/ &7");
 
-    public String getPrefix(String cmd) {
-        return this.prefix + CC.translate("&cUnknown command.");
+    public String unknown(String cmd) {
+        return this.prefix + CC.translate("&fUnknown command.");
     }
 }

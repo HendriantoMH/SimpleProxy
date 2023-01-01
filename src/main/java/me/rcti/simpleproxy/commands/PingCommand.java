@@ -11,6 +11,7 @@ public class PingCommand extends Command {
         super("ping");
     }
 
+    @Deprecated
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 0) {
             sender.sendMessage(Main.getInstance().data.prefix + CC.translate("&cUsage: /ping"));

@@ -1,5 +1,6 @@
 package me.rcti.simpleproxy;
 
+import me.rcti.simpleproxy.commands.BroadcastCommand;
 import me.rcti.simpleproxy.commands.PartyCommand;
 import me.rcti.simpleproxy.commands.PingCommand;
 import me.rcti.simpleproxy.database.MySQL;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import me.rcti.simpleproxy.listener.AntiSpamListener;
 import me.rcti.simpleproxy.listener.PartyInfoListener;
 import me.rcti.simpleproxy.listener.PartyListener;
 import me.rcti.simpleproxy.listener.TabCompleteListener;
@@ -30,7 +32,7 @@ public class Main extends Plugin {
     public DataManager data;
     public PluginManager pluginManager;
     public Stats mysql;
-    public ArrayList<ProxiedPlayer> teamban = new ArrayList();
+    public ArrayList<ProxiedPlayer> teamban = new ArrayList<>();
     public ExecutorService executorService = Executors.newCachedThreadPool();
 
     public Main() {
@@ -65,25 +67,14 @@ public class Main extends Plugin {
         if (!file.exists()) {
             try {
                 Throwable throwable = null;
-                Object object = null;
 
                 try {
-                    InputStream in = this.getResourceAsStream("config.yml");
 
-                    try {
+                    try (InputStream in = this.getResourceAsStream("config.yml")) {
                         Files.copy(in, file.toPath());
-                    } finally {
-                        if (in != null) {
-                            in.close();
-                        }
-
                     }
                 } catch (Throwable throwable2) {
-                    if (throwable == null) {
-                        throwable = throwable2;
-                    } else if (throwable != throwable2) {
-                        throwable.addSuppressed(throwable2);
-                    }
+                    throwable = throwable2;
 
                     throw throwable;
                 }
@@ -101,6 +92,8 @@ public class Main extends Plugin {
     private void register() {
         pluginManager.registerCommand(this, new PingCommand());
         pluginManager.registerCommand(this, new PartyCommand());
+        pluginManager.registerCommand(this, new BroadcastCommand());
+        ProxyServer.getInstance().getPluginManager().registerListener(this, new AntiSpamListener());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new TabCompleteListener());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PartyInfoListener());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PartyListener());
